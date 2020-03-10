@@ -36,3 +36,33 @@
     transform: rotate(360deg);
   }
 }
+
+
+.nav_bar {
+  padding: 0.5rem;
+  height: 3rem;
+  font-size: 1.5rem;
+
+  background-color: green;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn {
+  padding: 0.5rem;
+  background-color: darkgreen;
+  color: white;
+  border: 1px solid darkorange;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  transition-duration: 0.25s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: darkorange;
+  color: black;
+}
