@@ -8,7 +8,7 @@ function App() {
 
   const [users, createUsers] = useState([]);
   const [counter, setCounter] = useState(0);
-  const [newUser, setUserData] = useState({});
+  const [newUser, setUserData] = useState({address: {city: ''}});
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -63,10 +63,25 @@ function App() {
     // console.log(new_id);
     // console.log(newUser);
     let obj = {...newUser};
-    obj.id = new_id;
-    console.log(obj);
+    if (!obj.id) {
+      obj.id = new_id;
+      createUsers((users) => {return[...users, obj]})
+    }
+    else {
+      let newUsers = users.map(user => {
+        if (user.id === obj.id) {
+          user = {...obj}
+          setUserData({address: {city: ''}})
+        }
+        return user;
+      });
+      createUsers(newUsers)
+
+    }
+
+    // console.log(obj);
    // setUserData(obj);
-    createUsers((users) => {return[...users, obj]})
+
   };
 
   const addNewUserToTheList = () => {
@@ -80,20 +95,25 @@ function App() {
     await  newID;
     // console.log(newID);
       await addNewUserID(newID);
-    console.log(newUser);
+    // console.log(newUser);
     //  await addNewUserToTheList();
-
     };
+
+  const existingUserToEdit = (userID) => {
+    let userToEdit = users.find(u => u.id === userID);
+    setUserData({...userToEdit});
+  };
 
 
   return (
     <div className="App">
       <Header usersCounter={counter} sort={sortUsers}/>
+      <CreateNewUserCard addData={addNewUserData} create={createNewUser} newUserData={newUser}/>
       {users
-        ? users.map( usr => { return <Card key={usr.id} user={usr} addRemove={countUser} del={deleteUser}/> } )
+        ? users.map( usr => { return <Card key={usr.id} user={usr} addRemove={countUser} del={deleteUser} edit={existingUserToEdit}/> } )
         : 'Please wait! Loading...'
       }
-      <CreateNewUserCard addData={addNewUserData} create={createNewUser} />
+
     </div>
   );
 }
